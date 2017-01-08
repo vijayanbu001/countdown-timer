@@ -1,0 +1,287 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<div id="countdown">
+  <div class="countdown-container">
+
+    <div class="contents">
+      <div id="secs">
+        <div id="old"></div>
+        <div id="new"></div>
+      </div>
+      <div id="degree">Seconds</div>
+    </div>
+    <canvas id="myCanvas" width="250" height="250"></canvas>
+
+  </div>
+  <div class="countdown-container">
+    <div class="contents">
+      <div id="mins">
+        <div id="old"></div>
+        <div id="new"></div>
+      </div>
+      <div id="degree">Minutes</div>
+
+    </div>
+    <canvas id="myCanvas1" width="250" height="250"></canvas>
+  </div>
+  <div class="countdown-container">
+    <div class="contents">
+      <div id="hours">
+        <div id="old"></div>
+        <div id="new"></div>
+      </div>
+      <div id="degree">Hours</div>
+
+    </div>
+    <canvas id="myCanvas2" width="250" height="250"></canvas>
+  </div>
+  <div class="countdown-container">
+    <div class="contents">
+      <div id="days">
+        <div id="old"></div>
+        <div id="new"></div>
+      </div>
+      <div id="degree">Days</div>
+    </div>
+    <canvas id="myCanvas3" width="250" height="250"></canvas>
+  </div>
+</div>
+<script>
+(function($) {
+  var date = new Date("2017-01-30");
+  jQuery.fn.countdown = function(options, callback) {
+    var settings = {
+      'date': null
+    };
+    if (options) {
+      $.extend(settings, options);
+    }
+    this_sel = $(this);
+    /*Canvas JavaScript*/
+    var canvas = document.getElementById('myCanvas');
+    var canvas1 = document.getElementById('myCanvas1');
+    var canvas2 = document.getElementById('myCanvas2');
+    var canvas3 = document.getElementById('myCanvas3');
+    var context = canvas.getContext('2d');
+    var context1 = canvas1.getContext('2d');
+    var context2 = canvas2.getContext('2d');
+    var context3 = canvas3.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var radius = 70;
+
+
+    var sec_arc_end = 0,
+      min_arc_end = 0,
+      hour_arc_end = 0,
+      day_arc_end = 0;
+
+    function count_exec() {
+      eventDate = Date.parse(date) / 1000;
+      currentDate = Math.floor($.now() / 1000);
+      if (eventDate <= currentDate) {
+        callback.call(this);
+        clearInterval(interval);
+      }
+      seconds = eventDate - currentDate;
+
+      days = Math.floor(seconds / (60 * 60 * 24));
+
+      seconds -= days * 60 * 60 * 24;
+      hours = Math.floor(seconds / (60 * 60));
+      seconds -= hours * 60 * 60;
+      minutes = Math.floor(seconds / 60);
+      seconds -= minutes * 60;
+
+      // seconds arc canvas...................
+      context.clearRect(50, 50, canvas.width, canvas.height);
+      sec_arc_end = ((60 - seconds) * parseFloat(0.10472));
+      context.beginPath();
+      context.arc(centerX, centerY, radius, 1.5 * Math.PI, 1.5 * Math.PI + sec_arc_end, false);
+      context.lineWidth = 8;
+      context.strokeStyle = '#14E170';
+      context.stroke();
+      // minutes arc canvas...................
+      context1.clearRect(50, 50, canvas.width, canvas.height);
+      min_arc_end = ((60 - minutes) * parseFloat(0.10471));
+      context1.beginPath();
+      context1.arc(centerX, centerY, radius, 1.5 * Math.PI, 1.5 * Math.PI + min_arc_end, false);
+      context1.lineWidth = 8;
+      context1.strokeStyle = '#14E170';
+      context1.stroke();
+      // hours arc canvas...................
+      context2.clearRect(50, 50, canvas.width, canvas.height);
+      hour_arc_end = ((24 - hours) * parseFloat((0.10471 * 5) / 2));
+      context2.beginPath();
+      context2.arc(centerX, centerY, radius, 1.5 * Math.PI, 1.5 * Math.PI + hour_arc_end, false);
+      context2.lineWidth = 8;
+      context2.strokeStyle = '#14E170';
+      context2.stroke();
+      // days arc canvas...................
+      context3.clearRect(50, 50, canvas.width, canvas.height);
+      day_arc_end = ((days) * parseFloat((0.10471) * 2));
+      context3.beginPath();
+      context3.arc(centerX, centerY, radius, 1.5 * Math.PI, 1.5 * Math.PI + day_arc_end, false);
+      context3.lineWidth = 8;
+      context3.strokeStyle = '#14E170';
+      context3.stroke();
+      // add 0 value to left of value
+      if (!isNaN(eventDate)) {
+        this_sel.find('#days #old').text(days);
+        this_sel.find('#days #new').text(days);
+        this_sel.find('#hours #old').text(hours );
+        this_sel.find('#hours #new').text(hours);
+        this_sel.find('#mins #old').text(minutes);
+        this_sel.find('#mins #new').text(minutes);
+        this_sel.find('#secs #old').text(seconds+1);
+        this_sel.find('#secs #new').text(seconds);
+
+        if (seconds == 59) {
+          this_sel.find('#mins').addClass("animate");
+        } else if (seconds == 58) {
+          this_sel.find('#mins').removeClass("animate");
+        }
+        if (minutes == 59 && seconds ==59) {
+          this_sel.find('#hours').addClass("animate");
+        } else if (seconds == 58) {
+          this_sel.find('#hours').removeClass("animate");
+        }
+        if (hours == 23 && minutes==59 && seconds ==59 ) {
+          this_sel.find('#days').addClass("animate");
+        } else if (seconds == 58) {
+          this_sel.find('#days').removeClass("animate");
+        }
+
+      }
+    }
+    count_exec();
+    interval = setInterval(count_exec, 1000);
+
+
+  };
+})(jQuery);
+$(document).ready(function() {
+  $("#countdown").countdown({
+      date: "6 january 2017 7:15:00"
+    },
+    function() {
+      $("#countdown").text("merry christmas");
+    }
+  );
+
+})
+</script>
+<style>
+#countdown {
+  width: 100%;
+  height: 150px;
+  background-color: grey;
+  padding: 5px;
+}
+.countdown-container {
+  width: 24%;
+  height: 97%;
+  text-align: center;
+  background-color: #0099FF;
+  border-radius: 20px;
+  position: absolute;
+}
+#countdown .countdown-container {
+  text-align: center;
+  float: left;
+  position: relative;
+  margin: 0.30% 0.5% 0.30% 0.5%;
+}
+#countdown .countdown-container .contents {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  font-size-adjust: 0.58;
+}
+.contents {
+  position: absolute;
+}
+.contents div {
+  position: relative;
+}
+#secs #old {
+  height: 30px;
+  font-size: 28px;
+  opacity: 0;
+  animation: rotate_old 1s infinite;
+    transform-origin: 50% 50%;
+}
+#secs #new {
+  height: 30px;
+  font-size: 28px;
+  animation: rotate_new 960ms infinite;
+    transform-origin: 50% 50%;
+}
+#old {
+  height: 30px;
+  font-size: 28px;
+}
+#new {
+  transform-origin: 50% 50%;
+  height: 30px;
+  font-size: 28px;
+  opacity: 0;
+}
+.animate #old {
+  height: 30px;
+  font-size: 28px;
+  opacity: 0;
+  animation: rotate_old 900ms infinite;
+   animation-delay: 45ms;
+}
+.animate #new {
+  height: 30px;
+  font-size: 28px;
+  animation: rotate_new 950ms infinite;
+   animation-delay: 50ms;
+}
+#old {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backface-visibility: hidden;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+@keyframes rotate_new {
+  0% {
+    transform: rotateZ(45deg) scale(1);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateZ(0deg) scale(1.5);
+  }
+}
+@keyframes rotate_old {
+  100% {
+    opacity: 0;
+    transform: rotateZ(-45deg) scale(2);
+  }
+  70%{
+	opacity:0;
+  }
+  0% {
+    opacity: 1;
+    transform: rotateZ(0deg) scale(1.5);
+	
+  }
+</style>
