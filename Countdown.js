@@ -1,55 +1,5 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-<div id="countdown">
-  <div class="countdown-container">
-
-    <div class="contents">
-      <div id="secs">
-        <div id="old"></div>
-        <div id="new"></div>
-      </div>
-      <div id="degree">Seconds</div>
-    </div>
-    <canvas id="myCanvas" width="250" height="250"></canvas>
-
-  </div>
-  <div class="countdown-container">
-    <div class="contents">
-      <div id="mins">
-        <div id="old"></div>
-        <div id="new"></div>
-      </div>
-      <div id="degree">Minutes</div>
-
-    </div>
-    <canvas id="myCanvas1" width="250" height="250"></canvas>
-  </div>
-  <div class="countdown-container">
-    <div class="contents">
-      <div id="hours">
-        <div id="old"></div>
-        <div id="new"></div>
-      </div>
-      <div id="degree">Hours</div>
-
-    </div>
-    <canvas id="myCanvas2" width="250" height="250"></canvas>
-  </div>
-  <div class="countdown-container">
-    <div class="contents">
-      <div id="days">
-        <div id="old"></div>
-        <div id="new"></div>
-      </div>
-      <div id="degree">Days</div>
-    </div>
-    <canvas id="myCanvas3" width="250" height="250"></canvas>
-  </div>
-</div>
-<script>
 (function($) {
-  var date = new Date("2017-01-30");
-  jQuery.fn.countdown = function(options, callback) {
+    jQuery.fn.countdown = function(options, callback) {
     var settings = {
       'date': null
     };
@@ -77,7 +27,7 @@
       day_arc_end = 0;
 
     function count_exec() {
-      eventDate = Date.parse(date) / 1000;
+      eventDate = Date.parse(settings.date) / 1000;
       currentDate = Math.floor($.now() / 1000);
       if (eventDate <= currentDate) {
         callback.call(this);
@@ -155,14 +105,14 @@
       }
     }
     count_exec();
-    interval = setInterval(count_exec, 1000);
+    var interval = setInterval(count_exec, 1000);
 
 
   };
 })(jQuery);
 $(document).ready(function() {
   $("#countdown").countdown({
-      date: "6 january 2017 7:15:00"
+      date: "6 April 2017 7:15:00"
     },
     function() {
       $("#countdown").text("merry christmas");
@@ -170,118 +120,4 @@ $(document).ready(function() {
   );
 
 })
-</script>
-<style>
-#countdown {
-  width: 100%;
-  height: 150px;
-  background-color: grey;
-  padding: 5px;
-}
-.countdown-container {
-  width: 24%;
-  height: 97%;
-  text-align: center;
-  background-color: #0099FF;
-  border-radius: 20px;
-  position: absolute;
-}
-#countdown .countdown-container {
-  text-align: center;
-  float: left;
-  position: relative;
-  margin: 0.30% 0.5% 0.30% 0.5%;
-}
-#countdown .countdown-container .contents {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  font-size-adjust: 0.58;
-}
-.contents {
-  position: absolute;
-}
-.contents div {
-  position: relative;
-}
-#secs #old {
-  height: 30px;
-  font-size: 28px;
-  opacity: 0;
-  animation: rotate_old 1s infinite;
-    transform-origin: 50% 50%;
-}
-#secs #new {
-  height: 30px;
-  font-size: 28px;
-  animation: rotate_new 960ms infinite;
-    transform-origin: 50% 50%;
-}
-#old {
-  height: 30px;
-  font-size: 28px;
-}
-#new {
-  transform-origin: 50% 50%;
-  height: 30px;
-  font-size: 28px;
-  opacity: 0;
-}
-.animate #old {
-  height: 30px;
-  font-size: 28px;
-  opacity: 0;
-  animation: rotate_old 900ms infinite;
-   animation-delay: 45ms;
-}
-.animate #new {
-  height: 30px;
-  font-size: 28px;
-  animation: rotate_new 950ms infinite;
-   animation-delay: 50ms;
-}
-#old {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  backface-visibility: hidden;
-}
-canvas {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-}
-@keyframes rotate_new {
-  0% {
-    transform: rotateZ(45deg) scale(1);
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-    transform: rotateZ(0deg) scale(1.5);
-  }
-}
-@keyframes rotate_old {
-  100% {
-    opacity: 0;
-    transform: rotateZ(-45deg) scale(2);
-  }
-  70%{
-	opacity:0;
-  }
-  0% {
-    opacity: 1;
-    transform: rotateZ(0deg) scale(1.5);
-	
-  }
-</style>
+
